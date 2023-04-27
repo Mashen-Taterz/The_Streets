@@ -80,7 +80,37 @@ class GameState:
         if not pygame.mixer.music.get_busy():
             self.play_music()
         
+        #Create character selection images and rectangles
+        char1_img = pygame.image.load("images/characters/biker/biker.jpg")
+        char1_rect = char1_img.get_rect(center = (SCREEN_WIDTH // 4, SCREEN_HEIGHT // 2))
+        char2_img = pygame.image.load("images/characters/punk/punk.jpg")
+        char2_rect = char2_img.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        char3_img = pygame.image.load("images/characters/cyborg/cyborg.jpg")
+        char3_rect = char3_img.get_rect(center = (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT // 2))
 
+        # Run character select loop ##Move this to main loop???
+        while self.current_state == "character_select":
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    # Check if a character is selected
+                    if char1_rect.collidepoint(event.pos):
+                        print("Character 1 selected!")
+                        self.current_state = "stage_select"
+                    elif char2_rect.collidepoint(event.pos):
+                        print("Character 2 selected!")
+                        self.current_state = "stage_select"
+                    elif char3_rect.collidepoint(event.pos):
+                        print("Character 3 selected!")
+                        self.current_state = "stage_select"
+                        
+            # Draw background and character selection images
+            screen.blit(self.background, (0, 0))
+            screen.blit(char1_img, char1_rect)
+            screen.blit(char2_img, char2_rect)
+            screen.blit(char3_img, char3_rect)
 
     def stage_select(self):
         self.current_state = "stage_select"
@@ -122,7 +152,7 @@ while True:
                 # move to character select screen
                 game_state.character_select()  # call the method on the instance
                 game_state.play_music()
-    
+        ##Maybe move this elif to title state method or add on the character select loop here
 
     #Update the frames
     pygame.display.update()
