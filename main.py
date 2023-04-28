@@ -123,9 +123,9 @@ class GameState:
         screen.blit(stage1_img, stage1_rect)
         screen.blit(stage2_img, stage2_rect)
         screen.blit(stage3_img, stage3_rect)
-        pygame.draw.rect(screen, (255, 0, 0), char1_rect, 2)
-        pygame.draw.rect(screen, (0, 255, 0), char2_rect, 2)
-        pygame.draw.rect(screen, (0, 0, 255), char3_rect, 2)
+        pygame.draw.rect(screen, (255, 0, 0), stage1_rect, 2)
+        pygame.draw.rect(screen, (0, 255, 0), stage2_rect, 2)
+        pygame.draw.rect(screen, (0, 0, 255), stage3_rect, 2)
 
     def main_game(self):
         self.current_state = "main_game"
