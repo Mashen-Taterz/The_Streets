@@ -174,6 +174,19 @@ while True:
                 print("Character 3 selected!")
                 game_state.stage_select()
                 game_state.play_music()
+        elif event.type == pygame.MOUSEBUTTONDOWN and game_state.current_state == "stage_select":
+            if stage1_rect.collidepoint(event.pos):
+                print("stage 1 selected!")
+                game_state.main_game()
+                game_state.play_music()
+            elif stage2_rect.collidepoint(event.pos):
+                print("stage 2 selected!")
+                game_state.main_game()
+                game_state.play_music()
+            elif stage3_rect.collidepoint(event.pos):
+                print("stage 3 selected!")
+                game_state.main_game()
+                game_state.play_music()
 
     
     #Update the frames
