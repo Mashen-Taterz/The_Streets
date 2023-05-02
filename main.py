@@ -18,6 +18,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 font = pygame.font.SysFont("freesansbold.ttf", 150)
 #Create text surface
 text_surface = font.render("The Streets", True, (255, 70, 70))
+text_surface2 = font.render("Character Select", True, (255, 70, 70))
+text_surface3 = font.render("Stage Select", True, (255, 70, 70))
 #Get text surface dimensions
 text_width, text_height = text_surface.get_rect().size
 
@@ -76,13 +78,13 @@ class GameState:
         #Draw background
         self.background = pygame.transform.scale(pygame.image.load("images/bg/bg_title.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(game_state.background, (0, 0))
+        #Draw text
+        screen.blit(text_surface, ((SCREEN_WIDTH - text_width) // 2, (SCREEN_HEIGHT - text_height) // 4))
         
         #Check if music is already playing
         if not pygame.mixer.music.get_busy():
             self.play_music()
 
-        #Draw title background and text
-        screen.blit(text_surface, ((SCREEN_WIDTH - text_width) // 2, (SCREEN_HEIGHT - text_height) // 4))
 
         #Draw play button
         pygame.draw.rect(screen, (255, 50, 50), play_button_rect)
@@ -96,10 +98,8 @@ class GameState:
         #Draw background
         self.background = pygame.transform.scale(pygame.image.load("images/bg/bg_cs.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(game_state.background, (0, 0))
-
-        #Play music
-        if not pygame.mixer.music.get_busy():
-            self.play_music()
+        #Draw text
+        screen.blit(text_surface2, ((SCREEN_WIDTH - text_width) // 3, (SCREEN_HEIGHT - text_height) // 6))
         
         # Draw character selection images
         screen.blit(char1_img, char1_rect)
@@ -114,10 +114,8 @@ class GameState:
         #Draw background
         self.background = pygame.transform.scale(pygame.image.load("images/bg/bg_ss.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(game_state.background, (0, 0))
-
-        #Play music
-        if not pygame.mixer.music.get_busy():
-            self.play_music()
+        #Draw text
+        screen.blit(text_surface3, ((SCREEN_WIDTH - text_width) // 2, (SCREEN_HEIGHT - text_height) // 6))
 
         # Draw stage selection images
         screen.blit(stage1_img, stage1_rect)
@@ -129,11 +127,11 @@ class GameState:
 
     def main_game(self):
         self.current_state = "main_game"
+        self.character = "character selected"
         self.background = "images/bg/bg1.png"
         self.music = "audio/music/stage_music_0.ogg" 
 
-        # code to start the main game here
-
+        
     
 
 
