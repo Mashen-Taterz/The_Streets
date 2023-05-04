@@ -59,6 +59,9 @@ class GameState:
         self.current_state = "title"
         self.background = None
         self.music = None
+        self.selected_character = None
+        self.selected_stage = None
+
 
     def play_music(self):
         if self.current_state == "title":
@@ -111,6 +114,7 @@ class GameState:
 
     def stage_select(self):
         self.current_state = "stage_select"
+
         #Draw background
         self.background = pygame.transform.scale(pygame.image.load("images/bg/bg_ss.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(game_state.background, (0, 0))
@@ -127,11 +131,26 @@ class GameState:
 
     def main_game(self):
         self.current_state = "main_game"
-        self.character = "character selected"
-        self.background = "images/bg/bg1.png"
+        self.character = None
+        self.background = None
         self.music = "audio/music/stage_music_0.ogg" 
 
-        
+        #Load the correct character
+        if self.selected_character == "char1":
+            self.character = "Biker"
+        elif self.selected_stage == "char2":
+            self.character = "Cyborg"
+        elif self.selected_stage == "char3":
+            self.character = "Punk"
+
+        #Load the correct stage
+        if self.selected_stage == "stage1":
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg1.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        elif self.selected_stage == "stage2":
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg2.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        elif self.selected_stage == "stage3":
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg3.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        screen.blit(self.background, (0, 0))
     
 
 
@@ -174,15 +193,15 @@ while True:
                 game_state.play_music()
         elif event.type == pygame.MOUSEBUTTONDOWN and game_state.current_state == "stage_select":
             if stage1_rect.collidepoint(event.pos):
-                print("stage 1 selected!")
+                game_state.selected_stage = "stage1"
                 game_state.main_game()
                 game_state.play_music()
             elif stage2_rect.collidepoint(event.pos):
-                print("stage 2 selected!")
+                game_state.selected_stage = "stage2"
                 game_state.main_game()
                 game_state.play_music()
             elif stage3_rect.collidepoint(event.pos):
-                print("stage 3 selected!")
+                game_state.selected_stage = "stage3"
                 game_state.main_game()
                 game_state.play_music()
 
