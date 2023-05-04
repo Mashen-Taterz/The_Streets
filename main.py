@@ -1,4 +1,5 @@
 import pygame, sys, random 
+from fighter import Fighter
 
 pygame.init()
 pygame.mixer.init()
@@ -12,6 +13,10 @@ music = None
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 960
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+#Create instances of fighters
+fighter_1 = Fighter(100, 720)
+fighter_2 = Fighter(1100, 720)
 
 
 #Load font
@@ -151,12 +156,22 @@ class GameState:
         elif self.selected_stage == "stage3":
             self.background = pygame.transform.scale(pygame.image.load("images/bg/bg3.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(self.background, (0, 0))
+
+        #Move fighters
+        fighter_1.move(SCREEN_WIDTH)
+        #fighter_2.move()
+
+        #Draw Fighters
+        fighter_1.draw(screen)
+        fighter_2.draw(screen)
     
 
 
 game_state = GameState()
 #Run main loop
 while True:
+    clock.tick(FPS)
+
     if game_state.current_state == "title":
         game_state.title_state()
     elif game_state.current_state == "character_select":
@@ -204,8 +219,10 @@ while True:
                 game_state.selected_stage = "stage3"
                 game_state.main_game()
                 game_state.play_music()
-
-    
+        else:
+            game_state.current_state == "main_game"
+            
+            
     #Update the frames
     pygame.display.update()
-    clock.tick(FPS)
+    
