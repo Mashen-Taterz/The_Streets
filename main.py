@@ -8,11 +8,35 @@ FPS = 60
 background = None
 music = None
 
+#Define colors
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+WHITE = (255, 255, 255)
 
 #Set up game window
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 960
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+#Load sprite sheets
+biker_sheet1 = pygame.image.load("images/characters/biker/Idle.png")
+biker_sheet2 = pygame.image.load("images/characters/biker/Run.png")
+biker_sheet3 = pygame.image.load("images/characters/biker/Attack.png")
+cyborg_sheet1 = pygame.image.load("images/characters/cyborg/Idle.png")
+cyborg_sheet2 = pygame.image.load("images/characters/cyborg/Run.png")
+cyborg_sheet3 = pygame.image.load("images/characters/cyborg/Attack.png")
+punk_sheet1 = pygame.image.load("images/characters/punk/Idle.png")
+punk_sheet2 = pygame.image.load("images/characters/punk/Run.png")
+punk_sheet3 = pygame.image.load("images/characters/punk/Attack.png")
+
+#Set up health bars
+def health_bar(health, x, y):
+    ratio = health / 100
+    pygame.draw.rect(screen, WHITE, (x-2, y-2, 404, 34))
+    pygame.draw.rect(screen, RED, (x, y, 400, 30))
+    pygame.draw.rect(screen,YELLOW, (x, y, 400 * ratio, 30))
 
 #Create instances of fighters
 fighter_1 = Fighter(100, 720)
@@ -155,10 +179,15 @@ class GameState:
             self.background = pygame.transform.scale(pygame.image.load("images/bg/bg2.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
         elif self.selected_stage == "stage3":
             self.background = pygame.transform.scale(pygame.image.load("images/bg/bg3.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        #Draw background
         screen.blit(self.background, (0, 0))
 
+        #Draw health bars
+        health_bar(fighter_1.health, 20, 20)
+        health_bar(fighter_2.health, 860, 20)
+
         #Move fighters
-        fighter_1.move(SCREEN_WIDTH)
+        fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_2)
         #fighter_2.move()
 
         #Draw Fighters
@@ -181,7 +210,7 @@ while True:
     elif game_state.current_state == "main_game":
         game_state.main_game()
     
-    # code to handle user input here
+    # Handle user input here
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -189,11 +218,11 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN and game_state.current_state == "title":
         # Check if button is pressed
             if play_button_rect.collidepoint(event.pos):
-                # move to character select screen
+                # Move to character select screen
                 game_state.character_select()  # call the method on the instance
                 game_state.play_music()
         elif event.type == pygame.MOUSEBUTTONDOWN and game_state.current_state == "character_select":
-            # Check if a character is selected
+            # Check what character is selected
             if char1_rect.collidepoint(event.pos):
                 print("Character 1 selected!")
                 game_state.stage_select()
@@ -207,6 +236,7 @@ while True:
                 game_state.stage_select()
                 game_state.play_music()
         elif event.type == pygame.MOUSEBUTTONDOWN and game_state.current_state == "stage_select":
+            # Check what stage is selected
             if stage1_rect.collidepoint(event.pos):
                 game_state.selected_stage = "stage1"
                 game_state.main_game()
