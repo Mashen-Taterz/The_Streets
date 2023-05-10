@@ -15,21 +15,27 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
+#Define fighter variables
+FIGHTER_SIZE = 48
+FIGHTER_SCALE = 5
+FIGHTER_OFFSET= [5, 13]
+FIGHTER_DATA = [FIGHTER_SIZE, FIGHTER_SCALE, FIGHTER_OFFSET]
+
+
 #Set up game window
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 960
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 #Load sprite sheets
-biker_sheet1 = pygame.image.load("images/characters/biker/Idle.png")
-biker_sheet2 = pygame.image.load("images/characters/biker/Run.png")
-biker_sheet3 = pygame.image.load("images/characters/biker/Attack.png")
-cyborg_sheet1 = pygame.image.load("images/characters/cyborg/Idle.png")
-cyborg_sheet2 = pygame.image.load("images/characters/cyborg/Run.png")
-cyborg_sheet3 = pygame.image.load("images/characters/cyborg/Attack.png")
-punk_sheet1 = pygame.image.load("images/characters/punk/Idle.png")
-punk_sheet2 = pygame.image.load("images/characters/punk/Run.png")
-punk_sheet3 = pygame.image.load("images/characters/punk/Attack.png")
+biker_sheet = pygame.image.load("images/characters/biker/full.png").convert_alpha()
+cyborg_sheet = pygame.image.load("images/characters/cyborg/full.png").convert_alpha()
+punk_sheet = pygame.image.load("images/characters/punk/full.png").convert_alpha()
+
+#Number of steps in animations
+BIKER_STEPS = [4, 6, 6]
+CYBORG_STEPS = [4, 6, 6]
+PUNK_STEPS = [4, 6, 6]
 
 #Set up health bars
 def health_bar(health, x, y):
@@ -39,9 +45,12 @@ def health_bar(health, x, y):
     pygame.draw.rect(screen,YELLOW, (x, y, 400 * ratio, 30))
 
 #Create instances of fighters
-fighter_1 = Fighter(100, 720)
-fighter_2 = Fighter(1100, 720)
+fighter_1 = Fighter(100, 720, False, FIGHTER_DATA, biker_sheet, BIKER_STEPS)#Player
+fighter_2 = Fighter(1100, 720, True, FIGHTER_DATA, cyborg_sheet, CYBORG_STEPS)#NPC
 
+#biker = Fighter()  #I will need to implement these once I fugure out
+#cyborg = Fighter() # how to get the sprite sheeets working
+#punk = Fighter()   # then I can adjust to the correct character
 
 #Load font
 font = pygame.font.SysFont("freesansbold.ttf", 150)
@@ -174,11 +183,11 @@ class GameState:
 
         #Load the correct stage
         if self.selected_stage == "stage1":
-            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg1.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg1.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
         elif self.selected_stage == "stage2":
-            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg2.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg2.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
         elif self.selected_stage == "stage3":
-            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg3.png"), (SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.background = pygame.transform.scale(pygame.image.load("images/bg/bg3.png").convert_alpha(), (SCREEN_WIDTH, SCREEN_HEIGHT))
         #Draw background
         screen.blit(self.background, (0, 0))
 
@@ -188,7 +197,7 @@ class GameState:
 
         #Move fighters
         fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_2)
-        #fighter_2.move()
+        #fighter_2.move() ### Need random NPC AI movements
 
         #Draw Fighters
         fighter_1.draw(screen)
