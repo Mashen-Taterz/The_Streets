@@ -22,7 +22,7 @@ class Fighter():
         for y, animation in enumerate(animation_steps):
             temp_img_list = []
             for x in range(animation):
-                temp_img = sprite_sheet.subsurface(x * self.size, 0, self.size, self.size)
+                temp_img = sprite_sheet.subsurface(x * self.size, y * self.size, self.size, self.size)
                 temp_img_list.append(pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
             animation_list.append(temp_img_list)
         return animation_list
@@ -79,7 +79,7 @@ class Fighter():
 
     def attack(self, surface, target):
         self.attacking = True
-        attack_rect = pygame.Rect(self.rect.centerx - (1.5 * self.rect.width * self.flip), self.rect.y, 1.5 * self.rect.width, self.rect.height / 2)
+        attack_rect = pygame.Rect(self.rect.centerx - (1.5 * self.rect.width * self.flip), self.rect.y, 1.5 * self.rect.width, self.rect.height)
         if attack_rect.colliderect(target.rect):
             target.health -= 5 
          
@@ -91,6 +91,8 @@ class Fighter():
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.flip, False)
         pygame.draw.rect(surface, (255, 0, 0), self.rect)
-        surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
-
-    
+        if not self.flip:  #Not 100% sure how this works but without the else statement the fighter wont stay in rect...
+            surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
+        else:
+            surface.blit(img, (self.rect.x - ((self.size * self.image_scale) - (self.offset[0] * 4.2 * self.image_scale)), self.rect.y - (self.offset[1] * self.image_scale)))
+        
